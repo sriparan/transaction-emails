@@ -1,3 +1,9 @@
 pwd
 ls -la *
-sh activities/stream_consumer/build.sh
+echo $SRC_TOP
+
+cd ${SRC_TOP}/activities/stream_consumer
+sh build.sh
+
+cd ${SRC_TOP}/infra/api/
+sh ./build.sh
