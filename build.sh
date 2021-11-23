@@ -5,10 +5,10 @@ ls -la *
 python --version
 
 ## install npm
-NODE_VERSION=16
-yum install -y gcc-c++ make
-curl -sL https://rpm.nodesource.com/setup_${NODE_VERSION}.x | bash -
-yum install -y nodejs 
+# NODE_VERSION=16
+# yum install -y gcc-c++ make
+# curl -sL https://rpm.nodesource.com/setup_${NODE_VERSION}.x | bash -
+# yum install -y nodejs 
 
 echo "Node version"
 node -v
