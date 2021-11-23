@@ -17,7 +17,6 @@ echo "NPM Version"
 npm -v
 
 echo "Install aws cdk"
-cdk --version
 npm install -g aws-cdk
 cdk --version
 
