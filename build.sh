@@ -20,9 +20,14 @@ echo "Install aws cdk"
 npm install -g aws-cdk
 cdk --version
 
+export CDK_DEFAULT_ACCOUNT=970914773934
+export CDK_DEFAULT_REGION=us-east-1
+
 echo $SRC_TOP
 cd ${SRC_TOP}/activities/stream_consumer
 sh build.sh
 
 cd ${SRC_TOP}/infra/api/
 sh ./build.sh
+
+

@@ -1,1 +1,2 @@
-cdk synthesize
+cdk synthesize && cdk deploy
+git 
