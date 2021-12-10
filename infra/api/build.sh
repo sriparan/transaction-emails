@@ -1,1 +1,1 @@
-cdk synthesize && cdk deploy
+cdk synthesize
