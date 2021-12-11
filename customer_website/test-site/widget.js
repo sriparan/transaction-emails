@@ -21,6 +21,6 @@ amazon_connect(
 );
 
 amazon_connect("customerDisplayName", function (callback) {
-  const displayName = "Jane Doe";
+  const displayName = "Demo user";
   callback(displayName);
 });
