@@ -8,6 +8,11 @@ you need to make sure the role that was provided during EKS cluster create is th
 
 If cluster is private and you need to have a host / cloud shell then ensure that the role you would use is mentioned on the cluster owners.
 
+
+configure command line tools
+https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html
+
+
 To configure the clients you need the eksctl and cubectl
 these command work with one cluster at a time and the cluster they want to manage have a few parameters that you need to provide.
 to simplify this , these clis use config files to manage the target clusters and the corrosponding configuration of the clusters.
