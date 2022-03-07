@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "EC2 template with minikube?"
+Parameters:
+  myamiid:
+    Type: String
+    Default: ami-04505e74c0741db8d
+  myinstancetype:
+    Type: String
+    Default: c5.xlarge
+  mysshkeys:
+    Type: String
+Resources:
+  ec2instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref myamiid
+      InstanceInitiatedShutdownBehavior: terminate
+      InstanceType: !Ref myinstancetype
+      KeyName: !Ref mysshkeys
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          GroupSet:
+            - "sg-09111ab72afe5d7f3"
+          SubnetId: "subnet-053038fe2bcf6bd98"
+      UserData:
+        Fn::Base64: !Sub |
+          sudo yum update -y
+          echo "This was running" > /tmp/junk.txt
+Outputs:
+  PublicName:
+    Description: EC2 ip name
+    Value: !GetAtt ec2instance.PublicDnsName
+  PublicIp:
+    Description: EC2 ip
+    Value: !GetAtt ec2instance.PublicIp
