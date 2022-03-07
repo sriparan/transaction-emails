@@ -1,0 +1,49 @@
+{
+    "version": "0",
+    "id": "81d83bb1-13dc-cb1e-b370-5c8151b020f7",
+    "detail-type": "Config Rules Compliance Change",
+    "source": "aws.config",
+    "account": "970914773934",
+    "time": "2022-03-02T07:03:47Z",
+    "region": "us-east-1",
+    "resources": [],
+    "detail": {
+        "resourceId": "vol-0f0b1ec8ced432a26",
+        "awsRegion": "us-east-1",
+        "awsAccountId": "970914773934",
+        "configRuleName": "volumes-prod-tags",
+        "recordVersion": "1.0",
+        "configRuleARN": "arn:aws:config:us-east-1:970914773934:config-rule/config-rule-dx9jfb",
+        "messageType": "ComplianceChangeNotification",
+        "newEvaluationResult": {
+            "evaluationResultIdentifier": {
+                "evaluationResultQualifier": {
+                    "configRuleName": "volumes-prod-tags",
+                    "resourceType": "AWS::EC2::Volume",
+                    "resourceId": "vol-0f0b1ec8ced432a26"
+                },
+                "orderingTimestamp": "2022-03-02T07:03:08.000Z"
+            },
+            "complianceType": "NON_COMPLIANT",
+            "resultRecordedTime": "2022-03-02T07:03:46.945Z",
+            "configRuleInvokedTime": "2022-03-02T07:03:45.230Z",
+            "annotation": "\nTag costcenter is not present."
+        },
+        "oldEvaluationResult": {
+            "evaluationResultIdentifier": {
+                "evaluationResultQualifier": {
+                    "configRuleName": "volumes-prod-tags",
+                    "resourceType": "AWS::EC2::Volume",
+                    "resourceId": "vol-0f0b1ec8ced432a26"
+                },
+                "orderingTimestamp": "2022-03-02T00:39:21.000Z"
+            },
+            "complianceType": "COMPLIANT",
+            "resultRecordedTime": "2022-03-02T00:39:56.391Z",
+            "configRuleInvokedTime": "2022-03-02T00:39:54.576Z",
+            "annotation": "This resource is compliant with the rule."
+        },
+        "notificationCreationTime": "2022-03-02T07:03:47.488Z",
+        "resourceType": "AWS::EC2::Volume"
+    }
+}

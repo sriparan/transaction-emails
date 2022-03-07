@@ -1,0 +1,103 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Metrics being collected for config compliance rule change"
+Parameters:
+  DeploymentTagKey:
+    Type: String
+    Default: "config-metrics"
+  DeploymentTagValue:
+    Type: String
+    Default: "config-metrics"
+Resources:
+  RoleforLambdaThatHandlesConfigChangeEvents:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: "ConfigEventsHandlerLambdaRole"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - "sts:AssumeRole"
+      Description: String
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSConfigRulesExecutionRole
+      Policies:
+        - PolicyDocument:
+            {
+              "Version": "2012-10-17",
+              "Statement":
+                [
+                  {
+                    "Sid": "AllowMetricPut",
+                    "Effect": "Allow",
+                    "Action":
+                      ["cloundwatch:GetMetric*", "cloundwatch:PutMetric*"],
+                    "Resource": "*",
+                    "Condition":
+                      {
+                        "StringEquals":
+                          { "AWS:SourceAccount": !Ref "AWS::AccountId" },
+                      },
+                  },
+                ],
+            }
+          PolicyName: LambdaPutMetricsPermissions
+      Tags:
+        - Key: !Ref DeploymentTagKey
+          Value: !Ref DeploymentTagValue
+
+  LambdaThatHandlesConfigChangeEvents:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: HandlesConfigChangeEventsLambda
+      Code:
+        ZipFile: |
+          import json
+          import boto3
+          def lambda_handler(event, context):
+              print(event)
+
+      Handler: index.lambda_handler
+      Runtime: python3.7
+      MemorySize: 128
+      Role:
+        Fn::GetAtt:
+          - RoleforLambdaThatHandlesConfigChangeEvents
+          - Arn
+      Timeout: 60
+      Tags:
+        - Key: !Ref DeploymentTagKey
+          Value: !Ref DeploymentTagValue
+
+  ConfigPermissionToCallLambda:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName:
+        Fn::GetAtt:
+          - LambdaThatHandlesConfigChangeEvents
+          - Arn
+      Action: "lambda:InvokeFunction"
+      Principal: "events.amazonaws.com"
+      SourceAccount: !Ref "AWS::AccountId"
+
+  EventBusRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: Rule to handle compliance changes
+      EventPattern:
+        {
+          "source": ["aws.config"],
+          "detail-type": ["Config Rules Compliance Change"],
+        }
+      Name: RecordComplianceChange
+      State: ENABLED
+      Targets:
+        - Id: "Change_event"
+          Arn:
+            Fn::GetAtt:
+              - "LambdaThatHandlesConfigChangeEvents"
+              - "Arn"
